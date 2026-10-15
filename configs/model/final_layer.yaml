@@ -1,0 +1,6 @@
+defaults:
+- base
+- _self_
+readout: final_layer
+position_interface: native_3d
+action_text_cross_attn: true

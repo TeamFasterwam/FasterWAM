@@ -1,0 +1,4 @@
+defaults:
+- base
+- _self_
+position_interface: lifted_3d

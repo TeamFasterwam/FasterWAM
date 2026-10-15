@@ -1,0 +1,1 @@
+"""Faster-WAM package."""

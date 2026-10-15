@@ -1,0 +1,9 @@
+defaults:
+- base
+- _self_
+readout: interleaved
+position_interface: native_3d
+action_text_cross_attn: true
+action_dit_pretrained_path: ${oc.env:ACTION_DIT_PRETRAINED_PATH,./checkpoints/ActionDiT_linear_interp_Wan22_alphascale_1024hdim.pt}
+action_dit_config:
+  num_layers: 30

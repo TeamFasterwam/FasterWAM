@@ -1,0 +1,41 @@
+# Faster-WAM training defaults. Global batch = batch_size × processes × accumulation.
+defaults:
+- _self_
+- data: libero_2cam
+- model: fasterwam
+output_dir: ./runs/train/${now:%Y-%m-%d}_${now:%H-%M-%S}
+batch_size: 8
+num_workers: 8
+lr_scheduler_type: cosine
+learning_rate: 0.0001
+num_epochs: 10
+max_steps: null
+wsd_decay_fraction: 0.1
+wsd_decay_shape: linear
+wsd_branch_decay_steps: null
+log_every: 10
+save_every: 2000
+save_steps: []
+eval_every: 0
+eval_num_inference_steps: 10
+gradient_accumulation_steps: 1
+mixed_precision: bf16
+distributed_timeout_minutes: 60
+seed: 42
+max_grad_norm: 1.0
+weight_decay: 0.01
+resume: null
+freeze_video_backbone: false
+wandb:
+  workspace: null
+  enabled: false
+  project: fasterwam
+  name: ${model.position_interface}_${now:%Y%m%d_%H%M%S}
+  group: null
+  mode: offline
+hydra:
+  job:
+    chdir: false
+  run:
+    dir: .
+  output_subdir: null

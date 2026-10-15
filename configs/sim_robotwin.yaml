@@ -1,0 +1,49 @@
+# @package _global_
+defaults:
+  - train
+  - override /data: robotwin
+  - _self_
+
+ckpt: null
+gpu_id: 0
+
+model:
+  load_text_encoder: true
+  skip_dit_load_from_pretrain: true
+  action_dit_pretrained_path: null
+
+EVALUATION:
+  robotwin_root: ${oc.env:ROBOTWIN_ROOT,./third_party/RoboTwin}
+  task_name: null
+  task_config: demo_clean
+  policy_name: fasterwam_policy
+  instruction_type: unseen
+  eval_num_episodes: 100
+  output_dir: ./evaluate_results/robotwin/${now:%Y%m%d_%H%M%S}
+  dataset_stats_path: null
+  device: cuda
+  action_horizon: null
+  replan_steps: 24
+  num_inference_steps: ${eval_num_inference_steps}
+  sigma_shift: null
+  text_cfg_scale: 1.0
+  negative_prompt: ""
+  rand_device: cpu
+  tiled: false
+  timing_enabled: false
+  per_request_noise: true
+  skip_get_obs_within_replan: true
+  full_frame_video: false
+  progress_bar: true
+
+MULTIRUN:
+  num_gpus: 1
+  max_tasks_per_gpu: 1
+  phases: clean,random
+
+hydra:
+  job:
+    chdir: false
+  run:
+    dir: .
+  output_subdir: null

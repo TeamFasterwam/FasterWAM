@@ -1,0 +1,10 @@
+# LIBERO-Plus uses the LIBERO policy and dataset normalization. Each benchmark
+# task is evaluated once because the benchmark enumerates perturbed task variants.
+defaults:
+  - sim_libero
+  - _self_
+
+EVALUATION:
+  benchmark_flavor: libero_plus
+  num_trials: 1
+  output_dir: ./evaluate_results/libero_plus/${hydra:runtime.choices.model}/${now:%Y%m%d_%H%M%S}

@@ -1,0 +1,6 @@
+defaults:
+- base
+- _self_
+key_aggregation_order: fuse_then_norm_rope
+position_interface: native_3d
+action_text_cross_attn: true

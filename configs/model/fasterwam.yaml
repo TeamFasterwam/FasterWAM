@@ -1,0 +1,4 @@
+defaults:
+- base
+- _self_
+mot_checkpoint_mixed_attn: false

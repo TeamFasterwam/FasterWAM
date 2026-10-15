@@ -1,0 +1,90 @@
+# @package _global_
+
+defaults:
+  - train
+  - override /data: libero_2cam
+  - _self_
+
+ckpt: null
+gpu_id: 0
+
+model:
+  load_text_encoder: true
+  skip_dit_load_from_pretrain: true
+  action_dit_pretrained_path: null
+
+EVALUATION:
+  # libero_standard or libero_plus; must match the installed `libero` package.
+  benchmark_flavor: libero_standard
+  task_suite_name: libero_spatial
+  task_id: 0
+  num_trials: 50
+  output_dir: ./evaluate_results/libero/${hydra:runtime.choices.model}/${now:%Y%m%d_%H%M%S}
+
+  # Runtime behavior
+  # Optional task-environment seed, independent of action noise; null uses `seed`.
+  env_seed: null
+  env_num: 1
+  num_steps_wait: 30
+  replan_steps: 10
+  binarize_gripper: true
+  use_action_ensembler: false
+  visualize_future_video: false
+  save_rollout_video: true
+  cache_text_context: false
+  text_embedding_cache_dir: null
+  text_embedding_context_len: 128
+  text_embedding_encoder_id: wan22ti2v5b
+  progress_bar: true
+  # Allow throughput runs to disable stage-timing synchronization.
+  disable_inference_timing_sync: false
+  # Cache camera pixels between replans while still advancing physics every action.
+  skip_render_within_replan: true
+  # Max concurrent actor requests served in one batched forward pass. 1 keeps the
+  # legacy one-request-at-a-time server. Requires precomputed prompt contexts.
+  policy_batch_size: 1
+
+  # Action inference
+  action_horizon: null
+  num_inference_steps: ${eval_num_inference_steps}
+  sigma_shift: null
+  text_cfg_scale: 1.0
+  negative_prompt: ""
+  rand_device: cpu
+  tiled: false
+  # Each request draws reproducible independent noise, keyed by task/episode/replan.
+  per_request_noise: true
+  # Optional batch-one T5 cache; otherwise the model encodes prompts online.
+  task_prompt_cache_dir: null
+
+  # Optional external inputs
+  dataset_stats_path: null
+  device: cuda
+
+MULTIRUN:
+  create_only: false
+  task_file: null
+  task_suite_names:
+    - libero_10
+    - libero_goal
+    - libero_spatial
+    - libero_object
+  num_gpus: 1
+  # Batch eval (run_libero_manager_v2.py): each worker holds the full 5B model
+  # for the whole run, so >1 worker per GPU OOMs. Keep this at 1.
+  max_tasks_per_gpu: 1
+  # Optional actor counts aligned to the selected physical GPU list.
+  sim_actors_per_gpu: null
+  # Optional physical GPU hosting the single shared model server.
+  server_gpu: null
+  # Opt-in global task claiming across persistent model workers.
+  dynamic_task_queue: false
+  # Total task-level attempts allowed when dynamic claiming is enabled.
+  task_queue_max_attempts: 2
+
+hydra:
+  job:
+    chdir: false
+  run:
+    dir: .
+  output_subdir: null

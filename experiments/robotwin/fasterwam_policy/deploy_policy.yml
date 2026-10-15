@@ -1,0 +1,27 @@
+# Defaults consumed by the RoboTwin evaluation process.
+policy_name: fasterwam_policy
+task_name: null
+task_config: demo_clean
+ckpt_setting: null
+seed: 0
+instruction_type: unseen
+eval_num_episodes: 100
+sim_cfg_path: null
+sim_cfg_name: sim_robotwin.yaml
+sim_data: null
+model_overrides: null
+mixed_precision: bf16
+device: cuda
+dataset_stats_path: null
+action_horizon: null
+replan_steps: 24
+num_inference_steps: 10
+sigma_shift: null
+text_cfg_scale: 1.0
+negative_prompt: ""
+rand_device: cpu
+tiled: false
+timing_enabled: false
+per_request_noise: true
+skip_get_obs_within_replan: true
+eval_video_full_frames: false
